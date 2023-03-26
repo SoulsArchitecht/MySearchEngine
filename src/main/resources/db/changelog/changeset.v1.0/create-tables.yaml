@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-create-site-n-pages-tables
+      id: 01-create-tables
       author: Serge
       changes:
         - createTable:
-            tableName: site
+            tableName: sites
             columns:
               - column:
                   name: id
@@ -40,7 +40,7 @@ databaseChangeLog:
                     nullable: false
 
         - createTable:
-            tableName: page
+            tableName: pages
             columns:
               - column:
                   name: id
@@ -67,5 +67,57 @@ databaseChangeLog:
               - column:
                   name: content
                   type: MEDIUMTEXT
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: lemmas
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: site_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lemma
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: frequency
+                  type: INT
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: indexes
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: page_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lemma_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rank
+                  type: FLOAT
                   constraints:
                     nullable: false

@@ -5,21 +5,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(indexes = @Index(columnList = "path", unique = true))
-public class Page {
+@Table(name = "pages")
+public class Page implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //@Column(name = "site_id", nullable = false)
-    @ManyToOne
-    @JoinColumn(name ="user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name ="site_id", nullable = false, referencedColumnName = "id")
     private Site site;
 
     @Column(name = "path", nullable = false)
@@ -28,6 +30,9 @@ public class Page {
     @Column(name = "code", nullable = false)
     private int code;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, columnDefinition = "MEDIUMTEXT")
     private String content;
+
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
+    private List<Index> index = new LinkedList<>();
 }

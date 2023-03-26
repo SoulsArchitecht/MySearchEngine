@@ -5,20 +5,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Site {
+@Table(name = "sites")
+public class Site implements Serializable {
 
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column(name = "status_time", nullable = false)
@@ -34,5 +38,10 @@ public class Site {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "site", cascade = CascadeType.ALL)
-    private List<Page> pageList;
+    private List<Page> pageList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "site", cascade = CascadeType.ALL)
+    private List<Lemma> lemmaList = new ArrayList<>();
+
+
 }
